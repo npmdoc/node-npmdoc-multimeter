@@ -1,0 +1,571 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/substack/node-multimeter#readme"
+
+    >multimeter (v0.1.1)</a>
+</h1>
+<h4>render multiple progress bars at once on the terminal</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.multimeter">module multimeter</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.multimeter.multimeter">
+            function <span class="apidocSignatureSpan"></span>multimeter
+            <span class="apidocSignatureSpan">(c)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.multimeter.bar">
+            function <span class="apidocSignatureSpan">multimeter.</span>bar
+            <span class="apidocSignatureSpan">(charm, x, y, params)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.multimeter.toString">
+            function <span class="apidocSignatureSpan">multimeter.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">multimeter.</span>bar.prototype</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.multimeter.bar">module multimeter.bar</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.multimeter.bar.bar">
+            function <span class="apidocSignatureSpan">multimeter.</span>bar
+            <span class="apidocSignatureSpan">(charm, x, y, params)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.multimeter.bar.prototype">module multimeter.bar.prototype</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.multimeter.bar.prototype.draw">
+            function <span class="apidocSignatureSpan">multimeter.bar.prototype.</span>draw
+            <span class="apidocSignatureSpan">(bars, msg)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.multimeter.bar.prototype.percent">
+            function <span class="apidocSignatureSpan">multimeter.bar.prototype.</span>percent
+            <span class="apidocSignatureSpan">(p, msg)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.multimeter.bar.prototype.ratio">
+            function <span class="apidocSignatureSpan">multimeter.bar.prototype.</span>ratio
+            <span class="apidocSignatureSpan">(n, d, msg)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.multimeter.toString">module multimeter.toString</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.multimeter.toString.toString">
+            function <span class="apidocSignatureSpan">multimeter.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.multimeter" id="apidoc.module.multimeter">module multimeter</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.multimeter.multimeter" id="apidoc.element.multimeter.multimeter">
+        function <span class="apidocSignatureSpan"></span>multimeter
+        <span class="apidocSignatureSpan">(c)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">multimeter = function (c) {
+    if (c instanceof charmer.Charm) {
+        var charm = c;
+    }
+    else {
+        var charm = charmer.apply(null, arguments);
+        charm.on(&#x27;^C&#x27;, function () {
+            charm.destroy();
+        });
+    }
+
+    var multi = function (x, y, params) {
+        if (typeof x === &#x27;object&#x27;) {
+            params = x;
+            x = params.x;
+            y = params.y;
+        }
+        if (!params) params = {};
+
+        if (x === undefined) x = &#x27;+0&#x27;;
+        if (y === undefined) y = &#x27;+0&#x27;;
+
+        var bar = new Bar(charm, x, y, params);
+        multi.bars.push(bar);
+        bar.offset = multi.offset;
+        multi.on(&#x27;offset&#x27;, function (o) {
+            bar.offset = o;
+        });
+        return bar;
+    };
+    multi.bars = [];
+
+    multi.rel = function (x, y, params) {
+        return multi(x, &#x27;-&#x27; + y, params);
+    };
+
+    multi.drop = function (params, cb) {
+        if (!cb) { cb = params; params = {} }
+
+        charm.position(function (x, y) {
+            var bar = new Bar(charm, x, y, params);
+            multi.bars.push(bar);
+            multi.on(&#x27;offset&#x27;, function (o) {
+                bar.offset = o;
+            });
+            cb(bar);
+        });
+    };
+
+    multi.charm = charm;
+    multi.destroy = charm.destroy.bind(charm);
+
+    multi.on = charm.on.bind(charm);
+    multi.emit = charm.emit.bind(charm);
+    multi.removeListener = charm.removeListener.bind(charm);
+    multi.write = charm.write.bind(charm);
+
+    (function () {
+        var offset = 0;
+        Object.defineProperty(multi, &#x27;offset&#x27;, {
+            set : function (o) {
+                offset = o;
+                multi.emit(&#x27;offset&#x27;, o);
+            },
+            get : function () {
+                return offset;
+            }
+        });
+    })();
+
+    return multi;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.multimeter.bar" id="apidoc.element.multimeter.bar">
+        function <span class="apidocSignatureSpan">multimeter.</span>bar
+        <span class="apidocSignatureSpan">(charm, x, y, params)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">bar = function (charm, x, y, params) {
+    this.charm = charm;
+    this.x = x;
+    this.y = y;
+    this.width = params.width || 10;
+    this.offset = params.offset || 0;
+
+    this.before = params.before || &#x27;[&#x27;;
+    this.after = params.after || &#x27;] &#x27;;
+
+    this.solid = params.solid || {
+        background : &#x27;blue&#x27;,
+        foreground : &#x27;white&#x27;,
+        text : &#x27;|&#x27;
+    };
+
+    this.empty = params.empty || {
+        background : null,
+        foreground : null,
+        text : &#x27; &#x27;
+    };
+
+    this.progress = {
+        percent : 0,
+        ratio : 0
+    };
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.multimeter.toString" id="apidoc.element.multimeter.toString">
+        function <span class="apidocSignatureSpan">multimeter.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return text;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+};
+}
+
+Bar.prototype.draw = function (bars, msg) {
+bars = Math.floor(bars);
+this.charm.push(true);
+
+if (this.y.<span class="apidocCodeKeywordSpan">toString</span>().match(/^[+-]/)) {
+    if (this.y.toString().match(/^-/)) {
+        this.charm.up(-this.y + this.offset);
+    }
+    else if (this.y.toString().match(/^\+/)) {
+        this.charm.down(+this.y - this.offset);
+    }
+    this.charm.column(+this.x);
+...</pre></li>
+    </ul>
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.multimeter.bar" id="apidoc.module.multimeter.bar">module multimeter.bar</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.multimeter.bar.bar" id="apidoc.element.multimeter.bar.bar">
+        function <span class="apidocSignatureSpan">multimeter.</span>bar
+        <span class="apidocSignatureSpan">(charm, x, y, params)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">bar = function (charm, x, y, params) {
+    this.charm = charm;
+    this.x = x;
+    this.y = y;
+    this.width = params.width || 10;
+    this.offset = params.offset || 0;
+
+    this.before = params.before || &#x27;[&#x27;;
+    this.after = params.after || &#x27;] &#x27;;
+
+    this.solid = params.solid || {
+        background : &#x27;blue&#x27;,
+        foreground : &#x27;white&#x27;,
+        text : &#x27;|&#x27;
+    };
+
+    this.empty = params.empty || {
+        background : null,
+        foreground : null,
+        text : &#x27; &#x27;
+    };
+
+    this.progress = {
+        percent : 0,
+        ratio : 0
+    };
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.multimeter.bar.prototype" id="apidoc.module.multimeter.bar.prototype">module multimeter.bar.prototype</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.multimeter.bar.prototype.draw" id="apidoc.element.multimeter.bar.prototype.draw">
+        function <span class="apidocSignatureSpan">multimeter.bar.prototype.</span>draw
+        <span class="apidocSignatureSpan">(bars, msg)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">draw = function (bars, msg) {
+    bars = Math.floor(bars);
+    this.charm.push(true);
+
+    if (this.y.toString().match(/^[+-]/)) {
+        if (this.y.toString().match(/^-/)) {
+            this.charm.up(-this.y + this.offset);
+        }
+        else if (this.y.toString().match(/^\+/)) {
+            this.charm.down(+this.y - this.offset);
+        }
+        this.charm.column(+this.x);
+    }
+    else {
+        this.charm.position(this.x, this.y);
+    }
+
+    this.charm.write(this.before);
+
+    if (this.solid.background) {
+        this.charm.background(this.solid.background);
+    }
+    if (this.solid.foreground) {
+        this.charm.foreground(this.solid.foreground);
+    }
+
+    this.charm
+        .write(Array(bars + 1).join(this.solid.text))
+        .display(&#x27;reset&#x27;)
+    ;
+
+    if (this.empty.background) {
+        this.charm.background(this.empty.background);
+    }
+    if (this.empty.foreground) {
+        this.charm.foreground(this.empty.foreground);
+    }
+
+    this.charm
+        .write(Array(this.width - bars + 1).join(this.empty.text))
+        .write(this.after + msg)
+    ;
+
+    this.charm.pop(true);
+
+    return this;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        return this.progress.percent;
+    }
+    else {
+        p = Math.min(100, p);
+        this.progress.percent = p;
+        this.progress.ratio = [ p, 100 ];
+
+        this.<span class="apidocCodeKeywordSpan">draw</span>(
+            this.width * p / 100,
+            msg || (Math.floor(p) + &#x27; %&#x27;)
+        );
+
+        return this;
+    }
+};
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.multimeter.bar.prototype.percent" id="apidoc.element.multimeter.bar.prototype.percent">
+        function <span class="apidocSignatureSpan">multimeter.bar.prototype.</span>percent
+        <span class="apidocSignatureSpan">(p, msg)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">percent = function (p, msg) {
+    if (p === undefined) {
+        return this.progress.percent;
+    }
+    else {
+        p = Math.min(100, p);
+        this.progress.percent = p;
+        this.progress.ratio = [ p, 100 ];
+
+        this.draw(
+            this.width * p / 100,
+            msg || (Math.floor(p) + &#x27; %&#x27;)
+        );
+
+        return this;
+    }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+````javascript
+var multimeter = require(&#x27;multimeter&#x27;);
+var multi = multimeter(process);
+
+multi.drop(function (bar) {
+    var iv = setInterval(function () {
+        var p = bar.<span class="apidocCodeKeywordSpan">percent</span>();
+        bar.percent(p + 1);
+
+        if (p &#x3e;= 100) clearInterval(iv);
+    }, 25);
+});
+````
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.multimeter.bar.prototype.ratio" id="apidoc.element.multimeter.bar.prototype.ratio">
+        function <span class="apidocSignatureSpan">multimeter.bar.prototype.</span>ratio
+        <span class="apidocSignatureSpan">(n, d, msg)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">ratio = function (n, d, msg) {
+    if (n === undefined &#x26;&#x26; d === undefined) {
+        return this.progress.ratio;
+    }
+    else {
+        var f = n / d;
+        this.progress.ratio = [ n, d ];
+        this.progress.percent = f * 100;
+
+        this.draw(
+            this.width * f,
+            msg || (n + &#x27; / &#x27; + d)
+        );
+
+        return this;
+    }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+bar.percent(p, msg=p + &#x27; %&#x27;)
+----------------------------
+
+Update the progress bar to `p` percent, a value between 0 and 100, inclusive.
+
+The text to the right of the progress bar will be set to `msg`.
+
+bar.<span class="apidocCodeKeywordSpan">ratio</span>(n, d, msg=n + &#x27; / &#x27; + d)
+----------------------------------
+
+Update the progress bar with a ratio, `n/d`.
+
+The text to the right of the progress bar will be set to `msg`.
+
+attributes
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.multimeter.toString" id="apidoc.module.multimeter.toString">module multimeter.toString</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.multimeter.toString.toString" id="apidoc.element.multimeter.toString.toString">
+        function <span class="apidocSignatureSpan">multimeter.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+};
+}
+
+Bar.prototype.draw = function (bars, msg) {
+bars = Math.floor(bars);
+this.charm.push(true);
+
+if (this.y.<span class="apidocCodeKeywordSpan">toString</span>().match(/^[+-]/)) {
+    if (this.y.toString().match(/^-/)) {
+        this.charm.up(-this.y + this.offset);
+    }
+    else if (this.y.toString().match(/^\+/)) {
+        this.charm.down(+this.y - this.offset);
+    }
+    this.charm.column(+this.x);
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
