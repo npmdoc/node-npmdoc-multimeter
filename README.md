@@ -1,4 +1,7 @@
-# api documentation for  [multimeter (v0.1.1)](https://github.com/substack/node-multimeter#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-multimeter.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-multimeter) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-multimeter.svg)](https://travis-ci.org/npmdoc/node-npmdoc-multimeter)
+# npmdoc-multimeter
+
+#### basic api documentation for  [multimeter (v0.1.1)](https://github.com/substack/node-multimeter#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-multimeter.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-multimeter) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-multimeter.svg)](https://travis-ci.org/npmdoc/node-npmdoc-multimeter)
+
 #### render multiple progress bars at once on the terminal
 
 [![NPM](https://nodei.co/npm/multimeter.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/multimeter)
@@ -66,7 +69,8 @@
         "type": "git",
         "url": "git+ssh://git@github.com/substack/node-multimeter.git"
     },
-    "version": "0.1.1"
+    "version": "0.1.1",
+    "bin": {}
 }
 ```
 
