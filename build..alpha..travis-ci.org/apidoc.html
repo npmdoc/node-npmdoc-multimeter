@@ -81,15 +81,6 @@
 
         <li>
 
-            <a class="apidocElementLiA" href="#apidoc.element.multimeter.toString">
-            function <span class="apidocSignatureSpan">multimeter.</span>toString
-            <span class="apidocSignatureSpan">()</span>
-            </a>
-
-        </li>
-
-        <li>
-
             <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">multimeter.</span>bar.prototype</span>
 
         </li>
@@ -134,19 +125,6 @@
             <a class="apidocElementLiA" href="#apidoc.element.multimeter.bar.prototype.ratio">
             function <span class="apidocSignatureSpan">multimeter.bar.prototype.</span>ratio
             <span class="apidocSignatureSpan">(n, d, msg)</span>
-            </a>
-
-        </li>
-
-    </ol></li>
-
-    <li class="apidocModuleLi"><a href="#apidoc.module.multimeter.toString">module multimeter.toString</a><ol>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.multimeter.toString.toString">
-            function <span class="apidocSignatureSpan">multimeter.</span>toString
-            <span class="apidocSignatureSpan">()</span>
             </a>
 
         </li>
@@ -278,37 +256,6 @@
     };
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
-    </ul>
-
-
-
-    <h2>
-        <a href="#apidoc.element.multimeter.toString" id="apidoc.element.multimeter.toString">
-        function <span class="apidocSignatureSpan">multimeter.</span>toString
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">toString = function () {
-    return text;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-};
-}
-
-Bar.prototype.draw = function (bars, msg) {
-bars = Math.floor(bars);
-this.charm.push(true);
-
-if (this.y.<span class="apidocCodeKeywordSpan">toString</span>().match(/^[+-]/)) {
-    if (this.y.toString().match(/^-/)) {
-        this.charm.up(-this.y + this.offset);
-    }
-    else if (this.y.toString().match(/^\+/)) {
-        this.charm.down(+this.y - this.offset);
-    }
-    this.charm.column(+this.x);
-...</pre></li>
     </ul>
 
 
@@ -464,20 +411,22 @@ if (this.y.<span class="apidocCodeKeywordSpan">toString</span>().match(/^[+-]/))
     }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-
-````javascript
-var multimeter = require(&#x27;multimeter&#x27;);
-var multi = multimeter(process);
-
-multi.drop(function (bar) {
-    var iv = setInterval(function () {
-        var p = bar.<span class="apidocCodeKeywordSpan">percent</span>();
-        bar.percent(p + 1);
-
-        if (p &#x3e;= 100) clearInterval(iv);
-    }, 25);
-});
-````
+    {
+      &#x22;name&#x22;: &#x22;substack&#x22;,
+      &#x22;email&#x22;: &#x22;mail@substack.net&#x22;
+    }
+  ],
+  &#x22;name&#x22;: &#x22;multimeter&#x22;,
+  &#x22;optionalDependencies&#x22;: {},
+  &#x22;readme&#x22;: &#x22;multimeter\n==========\n\nControl multiple ANSI progress bars on the terminal.\n\n![multibar example
+ output](http://substack.net/images/screenshots/multibar.png)\n\n![multimeter](http://substack.net/images/multimeter.png)\n\nexample\n=======\n\n````javascript\nvar multimeter = require(&#x27;multimeter&#x27;);\nvar multi = multimeter(process);\n\nmulti.drop(function (bar) {\n    var iv = setInterval(function () {\n        var p = bar.<span class="apidocCodeKeywordSpan">percent</span>();\n        bar.percent(p + 1);\n        \n        if (p &#x3e;= 100) clearInterval(iv);\n    }, 25);\n});\n````\n\nmethods\n=======\n\nvar multimeter = require(&#x27;multimeter&#x27;);\n\nvar multi = multimeter(stream, ...)\n-----------------------------------\n\nCreate a new multimeter handle on the supplied stream/process objects, which\nwill be passed directly to [charm](https://github.com/substack/node-charm).\n\nIf you pass in a charm object that will be used instead of creating a new one.\n\nvar bar = multi(x, y, params)\n-----------------------------\n\nCreate a new progress bar at `(x,y)` with `params` which default to:\n\n* width : 10\n* before : &#x27;[&#x27;\n* after : &#x27;] &#x27;\n* solid : { background : &#x27;blue&#x27;, foreground : &#x27;white&#x27;, text : &#x27;|&#x27; }\n* empty : { background : null, foreground : null, text : &#x27; &#x27; }\n\nIf `y` is negative or `&#x27;-0&#x27;` it will be treated as a relative coordinate.\n\nvar bar = multi.rel(x, y, params)\n---------------------------------\n\nCreate a new progress bar at an absolute `x` and relative `y` coordinate with\nrespect to the present `multi.offset`.\n\nmulti.drop(params, cb)\n----------------------\n\nCreate a new progress bar at the present cursor location. The `bar` object will\nbe passed to `cb(bar)` once the cursor location has been determined. \n\nmulti.on(...), multi.removeListener(...), multi.destroy(...), multi.write(...)\n------------------------------------------------------------------------------\n\nCall event emitter functions on the underlying `charm` object.\n\nmulti.offset\n------------\n\nThis getter/setter controls the positioning for relative progress bars.\n\nIncrement this value whenever you write a newline to the stream to prevent the\npending progress bars from drifting down from their original positions.\n\nbar.percent(p, msg=p + &#x27; %&#x27;)\n----------------------------\n\nUpdate the progress bar to `p` percent, a value between 0 and 100, inclusive.\n\nThe text to the right of the progress bar will be set to `msg`.\n\nbar.ratio(n, d, msg=n + &#x27; / &#x27; + d)\n----------------------------------\n\nUpdate the progress bar with a ratio, `n/d`.\n\nThe text to the right of the progress bar will be set to `msg`.\n\nattributes\n==========\n\nmulti.charm\n-----------\n\nThe [charm](https://github.com/substack/node-charm) object used internally to\ndraw the progress bars.\n\ninstall\n=======\n\nWith [npm](http://npmjs.org) do:\n\n    npm install multimeter\n&#x22;,
+  &#x22;readmeFilename&#x22;: &#x22;README.markdown&#x22;,
+  &#x22;repository&#x22;: {
+    &#x22;type&#x22;: &#x22;git&#x22;,
+    &#x22;url&#x22;: &#x22;git+ssh://git@github.com/substack/node-multimeter.git&#x22;
+  },
+  &#x22;version&#x22;: &#x22;0.1.1&#x22;
+}
 ...</pre></li>
     </ul>
 
@@ -508,55 +457,22 @@ multi.drop(function (bar) {
     }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-bar.percent(p, msg=p + &#x27; %&#x27;)
-----------------------------
-
-Update the progress bar to `p` percent, a value between 0 and 100, inclusive.
-
-The text to the right of the progress bar will be set to `msg`.
-
-bar.<span class="apidocCodeKeywordSpan">ratio</span>(n, d, msg=n + &#x27; / &#x27; + d)
-----------------------------------
-
-Update the progress bar with a ratio, `n/d`.
-
-The text to the right of the progress bar will be set to `msg`.
-
-attributes
-...</pre></li>
-    </ul>
-
-
-</div>
-
-<div class="apidocSectionDiv">
-<h1><a href="#apidoc.module.multimeter.toString" id="apidoc.module.multimeter.toString">module multimeter.toString</a></h1>
-
-
-    <h2>
-        <a href="#apidoc.element.multimeter.toString.toString" id="apidoc.element.multimeter.toString.toString">
-        function <span class="apidocSignatureSpan">multimeter.</span>toString
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-};
+    {
+      &#x22;name&#x22;: &#x22;substack&#x22;,
+      &#x22;email&#x22;: &#x22;mail@substack.net&#x22;
+    }
+  ],
+  &#x22;name&#x22;: &#x22;multimeter&#x22;,
+  &#x22;optionalDependencies&#x22;: {},
+  &#x22;readme&#x22;: &#x22;multimeter\n==========\n\nControl multiple ANSI progress bars on the terminal.\n\n![multibar example
+ output](http://substack.net/images/screenshots/multibar.png)\n\n![multimeter](http://substack.net/images/multimeter.png)\n\nexample\n=======\n\n````javascript\nvar multimeter = require(&#x27;multimeter&#x27;);\nvar multi = multimeter(process);\n\nmulti.drop(function (bar) {\n    var iv = setInterval(function () {\n        var p = bar.percent();\n        bar.percent(p + 1);\n        \n        if (p &#x3e;= 100) clearInterval(iv);\n    }, 25);\n});\n````\n\nmethods\n=======\n\nvar multimeter = require(&#x27;multimeter&#x27;);\n\nvar multi = multimeter(stream, ...)\n-----------------------------------\n\nCreate a new multimeter handle on the supplied stream/process objects, which\nwill be passed directly to [charm](https://github.com/substack/node-charm).\n\nIf you pass in a charm object that will be used instead of creating a new one.\n\nvar bar = multi(x, y, params)\n-----------------------------\n\nCreate a new progress bar at `(x,y)` with `params` which default to:\n\n* width : 10\n* before : &#x27;[&#x27;\n* after : &#x27;] &#x27;\n* solid : { background : &#x27;blue&#x27;, foreground : &#x27;white&#x27;, text : &#x27;|&#x27; }\n* empty : { background : null, foreground : null, text : &#x27; &#x27; }\n\nIf `y` is negative or `&#x27;-0&#x27;` it will be treated as a relative coordinate.\n\nvar bar = multi.rel(x, y, params)\n---------------------------------\n\nCreate a new progress bar at an absolute `x` and relative `y` coordinate with\nrespect to the present `multi.offset`.\n\nmulti.drop(params, cb)\n----------------------\n\nCreate a new progress bar at the present cursor location. The `bar` object will\nbe passed to `cb(bar)` once the cursor location has been determined. \n\nmulti.on(...), multi.removeListener(...), multi.destroy(...), multi.write(...)\n------------------------------------------------------------------------------\n\nCall event emitter functions on the underlying `charm` object.\n\nmulti.offset\n------------\n\nThis getter/setter controls the positioning for relative progress bars.\n\nIncrement this value whenever you write a newline to the stream to prevent the\npending progress bars from drifting down from their original positions.\n\nbar.percent(p, msg=p + &#x27; %&#x27;)\n----------------------------\n\nUpdate the progress bar to `p` percent, a value between 0 and 100, inclusive.\n\nThe text to the right of the progress bar will be set to `msg`.\n\nbar.<span class="apidocCodeKeywordSpan">ratio</span>(n, d, msg=n + &#x27; / &#x27; + d)\n----------------------------------\n\nUpdate the progress bar with a ratio, `n/d`.\n\nThe text to the right of the progress bar will be set to `msg`.\n\nattributes\n==========\n\nmulti.charm\n-----------\n\nThe [charm](https://github.com/substack/node-charm) object used internally to\ndraw the progress bars.\n\ninstall\n=======\n\nWith [npm](http://npmjs.org) do:\n\n    npm install multimeter\n&#x22;,
+  &#x22;readmeFilename&#x22;: &#x22;README.markdown&#x22;,
+  &#x22;repository&#x22;: {
+    &#x22;type&#x22;: &#x22;git&#x22;,
+    &#x22;url&#x22;: &#x22;git+ssh://git@github.com/substack/node-multimeter.git&#x22;
+  },
+  &#x22;version&#x22;: &#x22;0.1.1&#x22;
 }
-
-Bar.prototype.draw = function (bars, msg) {
-bars = Math.floor(bars);
-this.charm.push(true);
-
-if (this.y.<span class="apidocCodeKeywordSpan">toString</span>().match(/^[+-]/)) {
-    if (this.y.toString().match(/^-/)) {
-        this.charm.up(-this.y + this.offset);
-    }
-    else if (this.y.toString().match(/^\+/)) {
-        this.charm.down(+this.y - this.offset);
-    }
-    this.charm.column(+this.x);
 ...</pre></li>
     </ul>
 
